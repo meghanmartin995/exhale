@@ -1,2 +1,52 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<script type="text/javascript">
+  var apiKey = gon.api_key;
+  var sessionId = gon.session_id;
+  var token = gon.token;
+
+  // Handling all of our errors here by alerting them
+function handleError(error) {
+  if (error) {
+    alert(error.message);
+  }
+}
+
+// (optional) add server code here
+initializeSession();
+
+function initializeSession() {
+  var session = OT.initSession(apiKey, sessionId);
+
+  // Subscribe to a newly created stream
+  session.on('streamCreated', function(event) {
+    session.subscribe(event.stream, 'subscriber', {
+      insertMode: 'append',
+      width: '100%',
+      height: '100%'
+    }, handleError);
+  });
+
+  // Create a publisher
+  var publisher = OT.initPublisher('publisher', {
+    insertMode: 'append',
+    width: '100%',
+    height: '100%'
+  }, handleError);
+
+  // Connect to the session
+  session.connect(token, function(error) {
+    // If the connection is successful, initialize a publisher and publish to the session
+    if (error) {
+      handleError(error);
+    } else {
+      session.publish(publisher, handleError);
+    }
+  });
+}
+
+</script>
+
+<div id="videos">
+    <div id="subscriber"></div>
+    <div id="publisher"></div>
+</div>
+

@@ -15,7 +15,8 @@ gem 'sassc-rails'
 gem 'simple_form'
 gem 'uglifier'
 gem 'webpacker'
-gem 'opentok'
+gem "opentok", "~> 4.0.0"
+gem 'gon'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
